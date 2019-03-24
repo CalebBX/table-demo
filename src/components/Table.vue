@@ -1,38 +1,36 @@
 <template>
     <div>
-        <div class="table-wrapper ">
-            <table class="table row-hover">
-                <thead>
-                    <tr>
-                        <th
-                            v-for="column in columns"
-                            :key="column.field"
-                            @click="sortData(column.field, column.sortable)"
-                        >
-                            {{ column.label }}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody v-for="item in sortedData" :key="item.id">
-                    <tr>
-                        <td v-for="column in columns" :key="column.field">
-                            <input
-                                v-if="column.editable && column.type === 'text'"
-                                v-model="item[column.field]"
-                            />
-                            <div v-else-if="column.type === 'date'">
-                                {{
-                                    new Date(
-                                        item[column.field]
-                                    ).toLocaleDateString()
-                                }}
-                            </div>
-                            <div v-else>{{ item[column.field] }}</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <table class="table row-hover box-shadow">
+            <thead>
+                <tr>
+                    <th
+                        v-for="column in columns"
+                        :key="column.field"
+                        @click="sortData(column.field, column.sortable)"
+                    >
+                        {{ column.label }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody v-for="item in sortedData" :key="item.id">
+                <tr>
+                    <td v-for="column in columns" :key="column.field">
+                        <input
+                            v-if="column.editable && column.type === 'text'"
+                            v-model="item[column.field]"
+                        />
+                        <div v-else-if="column.type === 'date'">
+                            {{
+                                new Date(
+                                    item[column.field]
+                                ).toLocaleDateString()
+                            }}
+                        </div>
+                        <div v-else>{{ item[column.field] }}</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 <script>
@@ -79,7 +77,8 @@ export default {
 };
 </script>
 <style lang="scss">
-$table-color: #fff;
+$body-color: #fff;
+$head-color: rgb(70, 104, 255);
 $hover-color: #eef1ff;
 $border-color: #e7e7e7;
 // .table-responsive-vertical {
@@ -129,21 +128,25 @@ $border-color: #e7e7e7;
     width: 100%;
     max-width: 100%;
     margin-bottom: 2rem;
-    background-color: $table-color;
     border-collapse: collapse;
+    box-sizing: border-box;
 }
 input {
     font-family: inherit;
     font-size: inherit;
-    padding: 0.7rem;
-    margin: 0px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
+    padding: 1rem;
+    margin: -1rem;
     border: 0;
     :focus {
-        background-color: $table-color;
+        background-color: $body-color;
     }
+}
+thead {
+    background-color: $head-color;
+    color: white;
+}
+tbody {
+    background-color: $body-color;
 }
 th {
     text-align: left;
@@ -154,13 +157,9 @@ tr {
 }
 td {
     text-align: left;
-    padding: 1.6rem;
+    padding: 1rem;
 }
-thead {
-    tr {
-        border-bottom-width: 2px;
-    }
-}
+
 .row-hover {
     tbody {
         tr:hover {
@@ -171,11 +170,10 @@ thead {
         }
     }
 }
-.table-wrapper {
-    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
-        0 1px 2px 0 rgba(0, 0, 0, 0.24);
-    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
-        0 1px 2px 0 rgba(0, 0, 0, 0.24);
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+.box-shadow {
+    $shadow: 0 1px 3px 3px rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+    -webkit-box-shadow: $shadow;
+    -moz-box-shadow: $shadow;
+    box-shadow: $shadow;
 }
 </style>
