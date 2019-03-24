@@ -21,8 +21,14 @@ export default {
             items: [],
             columns: [
                 { field: "Name", label: "Name", sortable: true },
-                { field: "Amount", label: "Amount", sortable: true },
-                { field: "Description", label: "Description", editable: "text" }
+                {
+                    field: "Description",
+                    label: "Description",
+                    type: "text",
+                    editable: true
+                },
+                { field: "Date", label: "Date", type: "date" },
+                { field: "Amount", label: "Amount", sortable: true }
             ]
         };
     },

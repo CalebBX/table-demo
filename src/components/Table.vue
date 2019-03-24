@@ -17,9 +17,16 @@
                     <tr>
                         <td v-for="column in columns" :key="column.field">
                             <input
-                                v-if="column.editable === 'text'"
+                                v-if="column.editable && column.type === 'text'"
                                 v-model="item[column.field]"
                             />
+                            <div v-else-if="column.type === 'date'">
+                                {{
+                                    new Date(
+                                        item[column.field]
+                                    ).toLocaleDateString()
+                                }}
+                            </div>
                             <div v-else>{{ item[column.field] }}</div>
                         </td>
                     </tr>
@@ -126,6 +133,8 @@ $border-color: #e7e7e7;
     border-collapse: collapse;
 }
 input {
+    font-family: inherit;
+    font-size: inherit;
     padding: 0.7rem;
     margin: 0px;
     box-sizing: border-box;
