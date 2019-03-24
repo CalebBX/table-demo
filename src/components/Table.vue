@@ -132,6 +132,9 @@ input {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     border: 0;
+    :focus {
+        background-color: $table-color;
+    }
 }
 th {
     text-align: left;
@@ -153,7 +156,7 @@ thead {
     tbody {
         tr:hover {
             background-color: $hover-color;
-            input {
+            input:not(:focus) {
                 background-color: $hover-color;
             }
         }
