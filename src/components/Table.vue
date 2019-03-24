@@ -16,7 +16,11 @@
                 <tbody v-for="item in sortedData" :key="item.id">
                     <tr>
                         <td v-for="column in columns" :key="column.field">
-                            {{ item[column.field] }}
+                            <input
+                                v-if="column.editable === 'text'"
+                                v-model="item[column.field]"
+                            />
+                            <div v-else>{{ item[column.field] }}</div>
                         </td>
                     </tr>
                 </tbody>
