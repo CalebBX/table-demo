@@ -4,28 +4,31 @@
             <table class="table row-hover">
                 <thead>
                     <tr>
-                        <th @click="sortData('Name')">Name</th>
-                        <th>Amount</th>
-                        <th>Description</th>
+                        <th
+                            v-for="column in columns"
+                            :key="column.field"
+                            @click="sortData(column.field, column.sortable)"
+                        >
+                            {{ column.label }}
+                        </th>
                     </tr>
                 </thead>
                 <tbody v-for="item in sortedData" :key="item.id">
                     <tr>
-                        <td data-title="Name" >{{ item.Name }}</td>
-                        <td data-title="Amount">{{ item.Amount }}</td>
-                        <td data-title="Description"><input v-model="item.Description"></input></td>
-
+                        <td v-for="column in columns" :key="column.field">
+                            {{ item[column.field] }}
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        
     </div>
 </template>
 <script>
 export default {
     props: {
-        data: Array
+        data: Array,
+        columns: Array
     },
     data() {
         return { sortedData: [], isAscending: false, sortField: "" };
@@ -36,7 +39,10 @@ export default {
         }
     },
     methods: {
-        sortData(field) {
+        sortData(field, sortable) {
+            if (!sortable) {
+                return;
+            }
             this.isAscending = !this.isAscending;
             var asc = this.isAscending;
             this.sortedData = this.data.sort(function(a, b) {
@@ -124,6 +130,7 @@ input {
     border: 0;
 }
 th {
+    text-align: left;
     padding: 1.6rem;
 }
 tr {

@@ -17,7 +17,14 @@ export default {
         Table
     },
     data() {
-        return { items: [], columns: [] };
+        return {
+            items: [],
+            columns: [
+                { field: "Name", label: "Name", sortable: true },
+                { field: "Amount", label: "Amount", sortable: true },
+                { field: "Description", label: "Description", editable: "text" }
+            ]
+        };
     },
     methods: {
         getItems() {
