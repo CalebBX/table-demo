@@ -4,14 +4,14 @@
             <table class="table row-hover">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th @click="sortData('Name')">Name</th>
                         <th>Amount</th>
                         <th>Description</th>
                     </tr>
                 </thead>
-                <tbody v-for="item in data" :key="item.id">
+                <tbody v-for="item in sortedData" :key="item.id">
                     <tr>
-                        <td data-title="Name">{{ item.Name }}</td>
+                        <td data-title="Name" >{{ item.Name }}</td>
                         <td data-title="Amount">{{ item.Amount }}</td>
                         <td data-title="Description"><input v-model="item.Description"></input></td>
 
@@ -27,12 +27,43 @@ export default {
     props: {
         data: Array
     },
-    methods: {}
+    data() {
+        return { sortedData: [], isAscending: false, sortField: "" };
+    },
+    watch: {
+        data() {
+            this.sortedData = this.data;
+        }
+    },
+    methods: {
+        sortData(field) {
+            this.isAscending = !this.isAscending;
+            var asc = this.isAscending;
+            this.sortedData = this.data.sort(function(a, b) {
+                if (asc) {
+                    if (a[field] < b[field]) {
+                        return -1;
+                    }
+                    if (a[field] > b[field]) {
+                        return 1;
+                    }
+                    return 0;
+                } else {
+                    if (a[field] < b[field]) {
+                        return 1;
+                    }
+                    if (a[field] > b[field]) {
+                        return -1;
+                    }
+                }
+            });
+        }
+    }
 };
 </script>
 <style lang="scss">
 $table-color: #fff;
-$hover-color: #dfe6ff;
+$hover-color: #eef1ff;
 $border-color: #e7e7e7;
 // .table-responsive-vertical {
 //     @media screen and (max-width: 768px) {

@@ -1,6 +1,9 @@
 <template>
-    <div class="root">
-        <Table :data="items" :columns="columns"></Table>
+    <div>
+        <h2>Table Demo</h2>
+        <div class="root">
+            <Table :data="items" :columns="columns"></Table>
+        </div>
     </div>
 </template>
 
@@ -35,7 +38,6 @@ export default {
 .root {
     width: 100%;
     min-height: 100vh;
-    background: rgb(230, 230, 230);
 
     display: -webkit-box;
     display: -webkit-flex;
@@ -45,6 +47,5 @@ export default {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    padding: 30px;
 }
 </style>
