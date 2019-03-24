@@ -1,20 +1,40 @@
 <template>
-    <div>test</div>
+    <div>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+            </tr>
+            <tr v-for="item in data" :key="item.id">
+                <td>{{ item.Name }}</td>
+                <td>{{ item.Amount }}</td>
+            </tr>
+        </table>
+    </div>
 </template>
 <script>
 export default {
-    methods: {
-        getItems() {
-            console.log("test");
-            this.$http
-                .get(
-                    "https://britecore-coding-test.firebaseio.com/payments.json"
-                )
-                .then(res => console.log(res));
-        }
+    props: {
+        data: Array
     },
-    created() {
-        this.getItems();
-    }
+    methods: {}
 };
 </script>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
