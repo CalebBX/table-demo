@@ -1,5 +1,7 @@
 <template>
-    <Table :data="items" :columns="columns"></Table>
+    <div class="root">
+        <Table :data="items" :columns="columns"></Table>
+    </div>
 </template>
 
 <script>
@@ -29,3 +31,20 @@ export default {
     }
 };
 </script>
+<style>
+.root {
+    width: 100%;
+    min-height: 100vh;
+    background: rgb(230, 230, 230);
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 30px;
+}
+</style>
