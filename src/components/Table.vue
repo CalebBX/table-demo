@@ -9,6 +9,11 @@
                         @click="sortData(column.field, column.sortable)"
                     >
                         {{ column.label }}
+                        <i
+                            v-if="sortField === column.field"
+                            class="fas fa-fw fa-arrow-up arrow-rotate"
+                            :class="{ down: !isAscending }"
+                        ></i>
                     </th>
                 </tr>
             </thead>
@@ -52,6 +57,7 @@ export default {
             if (!sortable) {
                 return;
             }
+            this.sortField = field;
             this.isAscending = !this.isAscending;
             var asc = this.isAscending;
             this.sortedData = this.data.sort(function(a, b) {
@@ -79,51 +85,20 @@ export default {
 <style lang="scss">
 $body-color: #fff;
 $head-color: rgb(70, 104, 255);
+$head-hover-color: rgb(130, 153, 255);
 $hover-color: #eef1ff;
 $border-color: #e7e7e7;
-// .table-responsive-vertical {
-//     @media screen and (max-width: 768px) {
-//         // Tighten up spacing
-//         .table {
-//             margin-bottom: 0;
-//             background-color: transparent;
-//             thead,
-//             tfoot {
-//                 display: none;
-//             }
-
-//             tbody {
-//                 display: block;
-//                 tr {
-//                     display: block;
-//                     border: 1px solid $border-color;
-//                     border-radius: 2px;
-//                     margin-bottom: 1.6rem;
-//                     td {
-//                         display: block;
-//                         background-color: $table-color;
-//                         vertical-align: middle;
-//                         text-align: right;
-//                         border: 0;
-//                         border-bottom: 1px solid $border-color;
-//                     }
-//                     td:last-child {
-//                         border-bottom: 0;
-//                     }
-//                     td[data-title]:before {
-//                         content: attr(data-title);
-//                         float: left;
-//                         font-size: inherit;
-//                     }
-//                     input {
-//                         display: block;
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
-
+.arrow-rotate {
+    transition: background-color 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.arrow-rotate.down {
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
 .table {
     width: 100%;
     max-width: 100%;
@@ -137,23 +112,31 @@ input {
     padding: 1rem;
     margin: -1rem;
     border: 0;
+    transition: background-color 0.5s ease;
     :focus {
         background-color: $body-color;
     }
 }
 thead {
-    background-color: $head-color;
     color: white;
 }
 tbody {
     background-color: $body-color;
 }
 th {
+    background-color: $head-color;
     text-align: left;
     padding: 1.6rem;
+
+    transition: background-color 0.5s ease;
+    transition: text-decoration 0.5s ease;
+}
+th:hover {
+    background-color: $head-hover-color;
 }
 tr {
     border-bottom: 1px solid $border-color;
+    transition: background-color 0.5s ease;
 }
 td {
     text-align: left;

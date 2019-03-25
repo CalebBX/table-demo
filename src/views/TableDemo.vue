@@ -27,7 +27,7 @@ export default {
                     type: "text",
                     editable: true
                 },
-                { field: "Date", label: "Date", type: "date" },
+                { field: "Date", label: "Date", type: "date", sortable: true },
                 { field: "Amount", label: "Amount", sortable: true }
             ]
         };
