@@ -1,7 +1,11 @@
 <template>
-    <div>
-        <table class="table row-hover box-shadow">
-            <thead>
+    <div
+        ref="table"
+        class="table-wrapper  box-shadow"
+        @scroll="onTableScroll()"
+    >
+        <table class="table row-hover">
+            <thead ref="head">
                 <tr>
                     <th
                         v-for="column in columns"
@@ -20,10 +24,13 @@
             <tbody v-for="item in sortedData" :key="item.id">
                 <tr>
                     <td v-for="column in columns" :key="column.field">
-                        <input
-                            v-if="column.editable && column.type === 'text'"
-                            v-model="item[column.field]"
-                        />
+                        <div v-if="column.editable && column.type === 'text'">
+                            <input
+                                v-model="item[column.field]"
+                                @blur="saveItems()"
+                                @keyup.enter="$event.target.blur"
+                            />
+                        </div>
                         <div v-else-if="column.type === 'date'">
                             {{
                                 new Date(
@@ -42,14 +49,15 @@
 export default {
     props: {
         data: Array,
-        columns: Array
+        columns: Array,
+        value: Array
     },
     data() {
         return { sortedData: [], isAscending: false, sortField: "" };
     },
     watch: {
-        data() {
-            this.sortedData = this.data;
+        value() {
+            this.sortedData = this.value;
         }
     },
     methods: {
@@ -60,7 +68,7 @@ export default {
             this.sortField = field;
             this.isAscending = !this.isAscending;
             var asc = this.isAscending;
-            this.sortedData = this.data.sort(function(a, b) {
+            this.sortedData = this.value.sort(function(a, b) {
                 if (asc) {
                     if (a[field] < b[field]) {
                         return -1;
@@ -78,16 +86,33 @@ export default {
                     }
                 }
             });
+        },
+        saveItems() {
+            this.$emit("input", this.value);
+        },
+        onTableScroll() {
+            var scrollTop = this.$refs.table.scrollTop;
+            this.$refs.head.style.transform = "translateY(" + scrollTop + "px)";
         }
+    },
+    mounted() {
+        this.sortedData = this.value;
     }
 };
 </script>
 <style lang="scss">
 $body-color: #fff;
-$head-color: rgb(70, 104, 255);
+$head-color: rgb(255, 255, 255);
+$head-text-color: rgb(0, 0, 0);
 $head-hover-color: rgb(130, 153, 255);
 $hover-color: #eef1ff;
 $border-color: #e7e7e7;
+.table-wrapper {
+    overflow: auto;
+    height: 700px;
+    max-width: 75%;
+    margin: auto;
+}
 .arrow-rotate {
     transition: background-color 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -101,12 +126,13 @@ $border-color: #e7e7e7;
 }
 .table {
     width: 100%;
-    max-width: 100%;
+
     margin-bottom: 2rem;
     border-collapse: collapse;
-    box-sizing: border-box;
+    // box-sizing: border-box;
 }
 input {
+    width: 100%;
     font-family: inherit;
     font-size: inherit;
     padding: 1rem;
@@ -118,7 +144,7 @@ input {
     }
 }
 thead {
-    color: white;
+    color: $head-text-color;
 }
 tbody {
     background-color: $body-color;
@@ -127,12 +153,13 @@ th {
     background-color: $head-color;
     text-align: left;
     padding: 1.6rem;
-
+    border-bottom: 3px solid $border-color;
     transition: background-color 0.5s ease;
-    transition: text-decoration 0.5s ease;
+    transition: border 0.5s ease;
 }
 th:hover {
-    background-color: $head-hover-color;
+    // background-color: $head-hover-color;
+    border-bottom: 3px solid $head-text-color;
 }
 tr {
     border-bottom: 1px solid $border-color;
