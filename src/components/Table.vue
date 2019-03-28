@@ -1,48 +1,69 @@
 <template>
-    <div
-        ref="table"
-        class="table-wrapper  box-shadow"
-        @scroll="onTableScroll()"
-    >
-        <table class="table row-hover">
-            <thead ref="head">
-                <tr>
-                    <th
-                        v-for="column in columns"
-                        :key="column.field"
-                        @click="sortData(column.field, column.sortable)"
-                    >
-                        {{ column.label }}
-                        <i
-                            v-if="sortField === column.field"
-                            class="fas fa-fw fa-arrow-up arrow-rotate"
-                            :class="{ down: !isAscending }"
-                        ></i>
-                    </th>
-                </tr>
-            </thead>
-            <tbody v-for="item in sortedData" :key="item.id">
-                <tr>
-                    <td v-for="column in columns" :key="column.field">
-                        <div v-if="column.editable && column.type === 'text'">
-                            <input
-                                v-model="item[column.field]"
-                                @blur="saveItems()"
-                                @keyup.enter="$event.target.blur"
-                            />
-                        </div>
-                        <div v-else-if="column.type === 'date'">
-                            {{
-                                new Date(
-                                    item[column.field]
-                                ).toLocaleDateString()
-                            }}
-                        </div>
-                        <div v-else>{{ item[column.field] }}</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="table-container">
+        <div class="toolbar">
+            <div class="searchbar">
+                <i class="fas fa-fw fa-search"></i>
+                <input
+                    type="text"
+                    placeholder="Search ..."
+                    v-model="term"
+                    @input="filterData(value.slice(0))"
+                />
+            </div>
+        </div>
+        <div
+            ref="table"
+            class="table-wrapper  box-shadow"
+            @scroll="onTableScroll()"
+        >
+            <table class="table row-hover">
+                <thead ref="head">
+                    <tr>
+                        <th
+                            v-for="column in columns"
+                            :key="column.field"
+                            @click="
+                                sortData(
+                                    column.field,
+                                    !isAscending,
+                                    column.sortable
+                                )
+                            "
+                        >
+                            {{ column.label }}
+                            <i
+                                v-if="sortField === column.field"
+                                class="fas fa-fw fa-arrow-up arrow-rotate"
+                                :class="{ down: !isAscending }"
+                            ></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody v-for="item in dataDisplay" :key="item.id">
+                    <tr>
+                        <td v-for="column in columns" :key="column.field">
+                            <div
+                                v-if="column.editable && column.type === 'text'"
+                            >
+                                <input
+                                    v-model="item[column.field]"
+                                    @blur="saveItems()"
+                                    @keyup.enter="$event.target.blur"
+                                />
+                            </div>
+                            <div v-else-if="column.type === 'date'">
+                                {{
+                                    new Date(
+                                        item[column.field]
+                                    ).toLocaleDateString()
+                                }}
+                            </div>
+                            <div v-else>{{ item[column.field] }}</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 <script>
@@ -52,22 +73,22 @@ export default {
         value: Array
     },
     data() {
-        return { sortedData: [], isAscending: false, sortField: "" };
+        return { dataDisplay: [], isAscending: false, sortField: "", term: "" };
     },
     watch: {
         value() {
-            this.sortedData = this.value.slice(0);
+            this.filterData(this.value.slice(0));
         }
     },
     methods: {
-        sortData(field, sortable) {
+        sortData(field, order, sortable) {
             if (!sortable) {
                 return;
             }
             this.sortField = field;
-            this.isAscending = !this.isAscending;
+            this.isAscending = order;
             var asc = this.isAscending;
-            this.sortedData.sort(function(a, b) {
+            this.dataDisplay.sort(function(a, b) {
                 if (asc) {
                     if (a[field] < b[field]) {
                         return -1;
@@ -86,6 +107,22 @@ export default {
                 }
             });
         },
+        filterData(data) {
+            const term = this.term;
+            const columns = this.columns;
+            this.dataDisplay = data.filter(item => {
+                return columns.some(column => {
+                    return item[column.field]
+                        .toString()
+                        .toLowerCase()
+                        .includes(term.toLowerCase());
+
+                    {
+                    }
+                });
+            });
+            this.sortData(this.sortField, this.isAscending, true);
+        },
         saveItems() {
             this.$emit("input", this.value);
         },
@@ -95,7 +132,7 @@ export default {
         }
     },
     mounted() {
-        this.sortedData = this.value.slice(0);
+        this.filterData(this.value.slice(0));
     }
 };
 </script>
@@ -105,12 +142,14 @@ $head-color: rgb(255, 255, 255);
 $head-text-color: rgb(0, 0, 0);
 $head-hover-color: rgb(130, 153, 255);
 $hover-color: #eef1ff;
-$border-color: #e7e7e7;
+$border-color: #dadada;
+.table-container {
+    max-width: 75%;
+    margin: auto;
+}
 .table-wrapper {
     overflow: auto;
     height: 700px;
-    max-width: 75%;
-    margin: auto;
 }
 .arrow-rotate {
     transition: background-color 0.5s ease;
@@ -130,18 +169,31 @@ $border-color: #e7e7e7;
     border-collapse: collapse;
     // box-sizing: border-box;
 }
-input {
-    width: 100%;
-    font-family: inherit;
-    font-size: inherit;
-    padding: 1rem;
-    margin: -1rem;
-    border: 0;
-    transition: background-color 0.5s ease;
-    :focus {
-        background-color: $body-color;
+.toolbar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem;
+}
+.searchbar {
+    input {
+        padding: 10px 10px 10px 40px;
+        border: 2px solid $border-color;
+        border-radius: 15px;
+        -moz-border-radius: 15px;
+        -webkit-border-radius: 15px;
+        font-family: inherit;
+        font-size: inherit;
+    }
+    input:focus {
+        outline: none;
+        border: 2px solid $head-text-color;
+    }
+    i {
+        position: relative;
+        left: 35px;
     }
 }
+
 thead {
     color: $head-text-color;
 }
@@ -167,6 +219,15 @@ tr {
 td {
     text-align: left;
     padding: 1rem;
+    input {
+        width: 100%;
+        font-family: inherit;
+        font-size: inherit;
+        padding: 1rem;
+        margin: -1rem;
+        border: 0;
+        transition: background-color 0.5s ease;
+    }
 }
 
 .row-hover {
