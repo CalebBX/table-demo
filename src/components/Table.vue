@@ -48,7 +48,6 @@
 <script>
 export default {
     props: {
-        data: Array,
         columns: Array,
         value: Array
     },
@@ -57,7 +56,7 @@ export default {
     },
     watch: {
         value() {
-            this.sortedData = this.value;
+            this.sortedData = this.value.slice(0);
         }
     },
     methods: {
@@ -68,7 +67,7 @@ export default {
             this.sortField = field;
             this.isAscending = !this.isAscending;
             var asc = this.isAscending;
-            this.sortedData = this.value.sort(function(a, b) {
+            this.sortedData.sort(function(a, b) {
                 if (asc) {
                     if (a[field] < b[field]) {
                         return -1;
@@ -96,7 +95,7 @@ export default {
         }
     },
     mounted() {
-        this.sortedData = this.value;
+        this.sortedData = this.value.slice(0);
     }
 };
 </script>
