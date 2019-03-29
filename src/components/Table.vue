@@ -35,8 +35,9 @@
                         </th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    <simplebar>
+                    <VuePerfectScrollbar class="scroll-area">
                         <tr v-for="item in dataDisplay" :key="item.id">
                             <td v-for="column in columns" :key="column.field">
                                 <div
@@ -61,22 +62,21 @@
                                 <div v-else>{{ item[column.field] }}</div>
                             </td>
                         </tr>
-                    </simplebar>
+                    </VuePerfectScrollbar>
                 </tbody>
             </table>
         </div>
     </div>
 </template>
 <script>
-import simplebar from "simplebar-vue";
-import "simplebar/dist/simplebar.min.css";
+import VuePerfectScrollbar from "vue-perfect-scrollbar";
 export default {
     props: {
         columns: Array,
         value: Array
     },
     components: {
-        simplebar
+        VuePerfectScrollbar
     },
     data() {
         return { dataDisplay: [], isAscending: false, sortField: "", term: "" };
@@ -149,9 +149,16 @@ $head-text-color: rgb(0, 0, 0);
 $head-hover-color: rgb(130, 153, 255);
 $hover-color: #eef1ff;
 $border-color: #505050;
+
 .table-container {
-    max-width: 75%;
+    width: 75%;
     margin: auto;
+}
+.scroll-area {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    height: 700px;
 }
 .table-wrapper {
     // overflow: auto;
@@ -168,12 +175,10 @@ $border-color: #505050;
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
 }
-.table {
+table {
     width: 100%;
-
     margin-bottom: 2rem;
     border-collapse: collapse;
-    // box-sizing: border-box;
 }
 .toolbar {
     display: flex;
@@ -205,18 +210,14 @@ input {
 
 thead {
     color: $head-text-color;
-}
-tbody {
-    overflow: auto;
-    display: block;
-    height: 700px;
-    background-color: $body-color;
+    width: calc(100% - 1em);
 }
 thead,
 tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
+    background-color: $body-color;
 }
 th {
     background-color: $head-color;
@@ -239,14 +240,12 @@ td {
     padding: 1rem;
     input {
         width: 100%;
-
         padding: 1rem;
         margin: -1rem;
         border: 0;
         transition: background-color 0.5s ease;
     }
 }
-
 .row-hover {
     tbody {
         tr:hover {
