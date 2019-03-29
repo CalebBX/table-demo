@@ -144,11 +144,9 @@ export default {
 </script>
 <style lang="scss">
 $body-color: transparent;
-$head-color: transparent;
-$head-text-color: rgb(0, 0, 0);
-$head-hover-color: rgb(130, 153, 255);
-$hover-color: #eef1ff;
-$border-color: #505050;
+$text-color: black;
+$border-color: rgb(177, 177, 177);
+$hover-color: rgb(0, 0, 0);
 
 .table-container {
     width: 75%;
@@ -159,10 +157,6 @@ $border-color: #505050;
     margin: auto;
     width: 100%;
     height: 700px;
-}
-.table-wrapper {
-    // overflow: auto;
-    // height: 700px;
 }
 .arrow-rotate {
     transition: background-color 0.5s ease;
@@ -197,19 +191,30 @@ input {
         border-radius: 15px;
         -moz-border-radius: 15px;
         -webkit-border-radius: 15px;
+        transition: border 0.5s ease;
     }
     input:focus {
         outline: none;
-        border: 2px solid $head-text-color;
+        border: 2px solid $hover-color;
     }
     i {
+        color: $border-color;
         position: relative;
         left: 35px;
+        transition: color 0.5s ease;
+    }
+}
+.searchbar:hover {
+    input {
+        border: 2px solid $hover-color;
+    }
+    i {
+        color: $hover-color;
     }
 }
 
 thead {
-    color: $head-text-color;
+    color: $text-color;
     width: calc(100% - 1em);
 }
 thead,
@@ -220,20 +225,17 @@ tbody tr {
     background-color: $body-color;
 }
 th {
-    background-color: $head-color;
+    background-color: $body-color;
     text-align: left;
     padding: 1.6rem;
     border-bottom: 3px solid $border-color;
-    transition: background-color 0.5s ease;
     transition: border 0.5s ease;
 }
 th:hover {
-    // background-color: $head-hover-color;
-    border-bottom: 3px solid $head-text-color;
+    border-bottom: 3px solid $hover-color;
 }
 tr {
     border-bottom: 1px solid $border-color;
-    transition: background-color 0.5s ease;
 }
 td {
     text-align: left;
@@ -243,23 +245,9 @@ td {
         padding: 1rem;
         margin: -1rem;
         border: 0;
-        transition: background-color 0.5s ease;
     }
-}
-.row-hover {
-    tbody {
-        tr:hover {
-            background-color: $hover-color;
-            input:not(:focus) {
-                background-color: $hover-color;
-            }
-        }
+    input:focus {
+        outline: none;
     }
-}
-.box-shadow {
-    $shadow: 0 1px 3px 3px rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
-    -webkit-box-shadow: $shadow;
-    -moz-box-shadow: $shadow;
-    box-shadow: $shadow;
 }
 </style>
