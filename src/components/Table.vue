@@ -11,11 +11,7 @@
                 />
             </div>
         </div>
-        <div
-            ref="table"
-            class="table-wrapper  box-shadow"
-            @scroll="onTableScroll()"
-        >
+        <div ref="table" class="table-wrapper  " @scroll="onTableScroll()">
             <table class="table row-hover">
                 <thead ref="head">
                     <tr>
@@ -39,38 +35,48 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody v-for="item in dataDisplay" :key="item.id">
-                    <tr>
-                        <td v-for="column in columns" :key="column.field">
-                            <div
-                                v-if="column.editable && column.type === 'text'"
-                            >
-                                <input
-                                    v-model="item[column.field]"
-                                    @blur="saveItems()"
-                                    @keyup.enter="$event.target.blur"
-                                />
-                            </div>
-                            <div v-else-if="column.type === 'date'">
-                                {{
-                                    new Date(
-                                        item[column.field]
-                                    ).toLocaleDateString()
-                                }}
-                            </div>
-                            <div v-else>{{ item[column.field] }}</div>
-                        </td>
-                    </tr>
+                <tbody>
+                    <simplebar>
+                        <tr v-for="item in dataDisplay" :key="item.id">
+                            <td v-for="column in columns" :key="column.field">
+                                <div
+                                    v-if="
+                                        column.editable &&
+                                            column.type === 'text'
+                                    "
+                                >
+                                    <input
+                                        v-model="item[column.field]"
+                                        @blur="saveItems()"
+                                        @keyup.enter="$event.target.blur"
+                                    />
+                                </div>
+                                <div v-else-if="column.type === 'date'">
+                                    {{
+                                        new Date(
+                                            item[column.field]
+                                        ).toLocaleDateString()
+                                    }}
+                                </div>
+                                <div v-else>{{ item[column.field] }}</div>
+                            </td>
+                        </tr>
+                    </simplebar>
                 </tbody>
             </table>
         </div>
     </div>
 </template>
 <script>
+import simplebar from "simplebar-vue";
+import "simplebar/dist/simplebar.min.css";
 export default {
     props: {
         columns: Array,
         value: Array
+    },
+    components: {
+        simplebar
     },
     data() {
         return { dataDisplay: [], isAscending: false, sortField: "", term: "" };
@@ -137,19 +143,19 @@ export default {
 };
 </script>
 <style lang="scss">
-$body-color: #fff;
-$head-color: rgb(255, 255, 255);
+$body-color: transparent;
+$head-color: transparent;
 $head-text-color: rgb(0, 0, 0);
 $head-hover-color: rgb(130, 153, 255);
 $hover-color: #eef1ff;
-$border-color: #dadada;
+$border-color: #505050;
 .table-container {
     max-width: 75%;
     margin: auto;
 }
 .table-wrapper {
-    overflow: auto;
-    height: 700px;
+    // overflow: auto;
+    // height: 700px;
 }
 .arrow-rotate {
     transition: background-color 0.5s ease;
@@ -174,6 +180,11 @@ $border-color: #dadada;
     justify-content: flex-end;
     padding: 0.5rem;
 }
+input {
+    font-family: inherit;
+    font-size: inherit;
+    background-color: transparent;
+}
 .searchbar {
     input {
         padding: 10px 10px 10px 40px;
@@ -181,8 +192,6 @@ $border-color: #dadada;
         border-radius: 15px;
         -moz-border-radius: 15px;
         -webkit-border-radius: 15px;
-        font-family: inherit;
-        font-size: inherit;
     }
     input:focus {
         outline: none;
@@ -198,7 +207,16 @@ thead {
     color: $head-text-color;
 }
 tbody {
+    overflow: auto;
+    display: block;
+    height: 700px;
     background-color: $body-color;
+}
+thead,
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }
 th {
     background-color: $head-color;
@@ -221,8 +239,7 @@ td {
     padding: 1rem;
     input {
         width: 100%;
-        font-family: inherit;
-        font-size: inherit;
+
         padding: 1rem;
         margin: -1rem;
         border: 0;
