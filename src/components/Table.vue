@@ -117,7 +117,7 @@ export default {
             sortField: "",
             term: "",
             allSelected: false,
-            isEditing: true
+            isEditing: false
         };
     },
     watch: {
