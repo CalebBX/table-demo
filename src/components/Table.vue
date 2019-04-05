@@ -1,6 +1,13 @@
 <template>
     <div class="table-container">
         <div class="toolbar">
+            <div class="tools">
+                <i class="fas fa-2x fa-fw fa-edit" @click="toggleEdit()"></i>
+                <i
+                    class="fas fa-2x fa-fw fa-trash"
+                    @click="deleteSelected()"
+                ></i>
+            </div>
             <div class="searchbar">
                 <i class="fas fa-fw fa-search"></i>
                 <input
@@ -11,10 +18,13 @@
                 />
             </div>
         </div>
-        <div ref="table" class="table-wrapper  " @scroll="onTableScroll()">
+        <div class="table-wrapper">
             <table class="table row-hover">
                 <thead ref="head">
                     <tr>
+                        <th v-if="isEditing" class="checkbox-column">
+                            <input type="checkbox" v-model="allSelected" />
+                        </th>
                         <th
                             v-for="column in columns"
                             :key="column.field"
@@ -39,6 +49,14 @@
                 <tbody>
                     <VuePerfectScrollbar class="scroll-area">
                         <tr v-for="item in dataDisplay" :key="item.id">
+                            <td v-if="isEditing" class="checkbox-column">
+                                <div class="checkbox-container">
+                                    <input
+                                        type="checkbox"
+                                        v-model="selected[item.ID]"
+                                    />
+                                </div>
+                            </td>
                             <td v-for="column in columns" :key="column.field">
                                 <div
                                     v-if="
@@ -47,6 +65,7 @@
                                     "
                                 >
                                     <input
+                                        type="text"
                                         v-model="item[column.field]"
                                         @blur="saveItems()"
                                         @keyup.enter="$event.target.blur"
@@ -79,11 +98,27 @@ export default {
         VuePerfectScrollbar
     },
     data() {
-        return { dataDisplay: [], isAscending: false, sortField: "", term: "" };
+        return {
+            data: [],
+            dataDisplay: [],
+            selected: {},
+            isAscending: false,
+            sortField: "",
+            term: "",
+            allSelected: false,
+            isEditing: true
+        };
     },
     watch: {
         value() {
-            this.filterData(this.value.slice(0));
+            this.data = this.value.slice(0);
+            this.filterData(this.data);
+        },
+        allSelected() {
+            var $this = this;
+            this.dataDisplay.forEach(item => {
+                $this.selected[item.ID] = $this.allSelected;
+            });
         }
     },
     methods: {
@@ -129,8 +164,22 @@ export default {
             });
             this.sortData(this.sortField, this.isAscending, true);
         },
+        toggleEdit() {
+            this.isEditing = !this.isEditing;
+        },
+        deleteSelected() {
+            var selected = Object.entries(this.selected);
+            selected.forEach(pair => {
+                if (pair[1]) {
+                    this.data = this.data.filter(item => {
+                        return item.ID !== pair[0];
+                    });
+                }
+            });
+            this.saveItems();
+        },
         saveItems() {
-            this.$emit("input", this.value);
+            this.$emit("input", this.data);
         },
         onTableScroll() {
             var scrollTop = this.$refs.table.scrollTop;
@@ -143,14 +192,23 @@ export default {
 };
 </script>
 <style lang="scss">
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 $body-color: transparent;
 $text-color: black;
 $border-color: rgb(177, 177, 177);
 $hover-color: rgb(0, 0, 0);
 
+.checkbox-column {
+    width: 20px;
+    border: none;
+}
+
 .table-container {
     width: 75%;
     margin: auto;
+}
+.table-wrapper {
+    float: left;
 }
 .scroll-area {
     position: relative;
@@ -176,7 +234,7 @@ table {
 }
 .toolbar {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 0.5rem;
 }
 input {
@@ -204,6 +262,16 @@ input {
         transition: color 0.5s ease;
     }
 }
+.tools {
+    i {
+        color: $border-color;
+        transition: color 0.5s ease;
+    }
+    i:hover {
+        color: $text-color;
+    }
+    padding: 10px;
+}
 .searchbar:hover {
     input {
         border: 2px solid $hover-color;
@@ -227,7 +295,7 @@ tbody tr {
 th {
     background-color: $body-color;
     text-align: left;
-    padding: 1.6rem;
+    padding: 1rem;
     border-bottom: 3px solid $border-color;
     transition: border 0.5s ease;
 }
@@ -235,12 +303,12 @@ th:hover {
     border-bottom: 3px solid $hover-color;
 }
 tr {
-    border-bottom: 1px solid $border-color;
 }
 td {
+    border-bottom: 1px solid $border-color;
     text-align: left;
     padding: 1rem;
-    input {
+    input[type="text"] {
         width: 100%;
         padding: 1rem;
         margin: -1rem;
