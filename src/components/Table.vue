@@ -213,7 +213,9 @@ $hover-color: rgb(0, 0, 0);
     width: 20px;
     border: none;
 }
-
+.checkbox-column:hover {
+    border: none;
+}
 .table-container {
     width: 75%;
     margin: auto;
