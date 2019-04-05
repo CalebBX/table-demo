@@ -96,6 +96,9 @@
                 </tbody>
             </table>
         </div>
+        <div v-if="isEditing" class="total-selected">
+            Total Selected: <b>{{ totalSelected }}</b>
+        </div>
     </div>
 </template>
 <script>
@@ -130,6 +133,19 @@ export default {
             this.dataDisplay.forEach(item => {
                 $this.selected[item.ID] = $this.allSelected;
             });
+        }
+    },
+    computed: {
+        totalSelected() {
+            console.log("test");
+            var total = 0;
+            var pairs = Object.entries(this.selected);
+            pairs.forEach(pair => {
+                if (pair[1]) {
+                    total += 1;
+                }
+            });
+            return total;
         }
     },
     methods: {
@@ -177,6 +193,9 @@ export default {
         },
         toggleEdit() {
             this.isEditing = !this.isEditing;
+            if (this.isEditing) {
+                this.selected = {};
+            }
         },
         deleteSelected() {
             var selected = Object.entries(this.selected);
@@ -187,6 +206,7 @@ export default {
                     });
                 }
             });
+            this.selected = {};
             this.saveItems();
         },
         saveItems() {
@@ -209,6 +229,9 @@ $text-color: black;
 $border-color: rgb(177, 177, 177);
 $hover-color: rgb(0, 0, 0);
 
+.total-selected {
+    text-align: right;
+}
 .checkbox-column {
     width: 20px;
     border: none;
@@ -227,7 +250,7 @@ $hover-color: rgb(0, 0, 0);
     position: relative;
     margin: auto;
     width: 100%;
-    height: 700px;
+    height: 600px;
 }
 .arrow-rotate {
     transition: background-color 0.5s ease;
@@ -314,8 +337,6 @@ th {
 }
 th:hover {
     border-bottom: 3px solid $hover-color;
-}
-tr {
 }
 td {
     border-bottom: 1px solid $border-color;
