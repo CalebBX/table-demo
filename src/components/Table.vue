@@ -4,6 +4,7 @@
             <div class="tools">
                 <i class="fas fa-2x fa-fw fa-edit" @click="toggleEdit()"></i>
                 <i
+                    v-if="isEditing"
                     class="fas fa-2x fa-fw fa-trash"
                     @click="deleteSelected()"
                 ></i>
@@ -23,7 +24,12 @@
                 <thead ref="head">
                     <tr>
                         <th v-if="isEditing" class="checkbox-column">
-                            <input type="checkbox" v-model="allSelected" />
+                            <div class="pretty p-default">
+                                <input type="checkbox" v-model="allSelected" />
+                                <div class="state">
+                                    <label></label>
+                                </div>
+                            </div>
                         </th>
                         <th
                             v-for="column in columns"
@@ -51,10 +57,15 @@
                         <tr v-for="item in dataDisplay" :key="item.id">
                             <td v-if="isEditing" class="checkbox-column">
                                 <div class="checkbox-container">
-                                    <input
-                                        type="checkbox"
-                                        v-model="selected[item.ID]"
-                                    />
+                                    <div class="pretty p-default">
+                                        <input
+                                            type="checkbox"
+                                            v-model="selected[item.ID]"
+                                        />
+                                        <div class="state">
+                                            <label></label>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
                             <td v-for="column in columns" :key="column.field">
@@ -192,7 +203,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+@import "./../../node_modules/pretty-checkbox/src/pretty-checkbox.scss";
 $body-color: transparent;
 $text-color: black;
 $border-color: rgb(177, 177, 177);
