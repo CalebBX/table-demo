@@ -2,8 +2,13 @@
     <div class="table-container">
         <div class="toolbar">
             <div class="tools">
-                <i class="fas fa-2x fa-fw fa-edit" @click="toggleEdit()"></i>
                 <i
+                    id="editButton"
+                    class="fas fa-2x fa-fw fa-edit"
+                    @click="toggleEdit()"
+                ></i>
+                <i
+                    id="deleteButton"
                     v-if="isEditing"
                     class="fas fa-2x fa-fw fa-trash"
                     @click="deleteSelected()"
@@ -12,6 +17,7 @@
             <div class="searchbar">
                 <i class="fas fa-fw fa-search"></i>
                 <input
+                    id="searchbar"
                     type="text"
                     placeholder="Search ..."
                     v-model="term"
@@ -97,7 +103,8 @@
             </table>
         </div>
         <div v-if="isEditing" class="total-selected">
-            Total Selected: <b>{{ totalSelected }}</b>
+            Total Selected:
+            <b>{{ totalSelected }}</b>
         </div>
     </div>
 </template>
