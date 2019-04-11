@@ -3,7 +3,7 @@
         <div class="reset" @click="resetDB()">Reset Sample DB</div>
         <h2>Table Demo</h2>
         <div class="root">
-            <Table v-model="payments" :columns="columns"></Table>
+            <Table v-model="payments" :columns="columns" id_field="ID"></Table>
         </div>
     </div>
 </template>

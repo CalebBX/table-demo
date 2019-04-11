@@ -60,13 +60,13 @@
 
                 <tbody>
                     <VuePerfectScrollbar class="scroll-area">
-                        <tr v-for="item in dataDisplay" :key="item.id">
+                        <tr v-for="item in dataDisplay" :key="item[id_field]">
                             <td v-if="isEditing" class="checkbox-column">
                                 <div class="checkbox-container">
                                     <div class="pretty p-default">
                                         <input
                                             type="checkbox"
-                                            v-model="selected[item.ID]"
+                                            v-model="selected[item[id_field]]"
                                         />
                                         <div class="state">
                                             <label></label>
@@ -113,7 +113,11 @@ import VuePerfectScrollbar from "vue-perfect-scrollbar";
 export default {
     props: {
         columns: Array,
-        value: Array
+        value: Array,
+        id_field: {
+            type: String,
+            default: "id"
+        }
     },
     components: {
         VuePerfectScrollbar
@@ -148,7 +152,7 @@ export default {
         allSelected() {
             var $this = this;
             this.dataDisplay.forEach(item => {
-                $this.selected[item.ID] = $this.allSelected;
+                $this.selected[item[id_field]] = $this.allSelected;
             });
         }
     },
@@ -223,7 +227,7 @@ export default {
             selected.forEach(pair => {
                 if (pair[1]) {
                     this.data = this.data.filter(item => {
-                        return item.ID !== pair[0];
+                        return item[this.id_field] !== pair[0];
                     });
                 }
             });
