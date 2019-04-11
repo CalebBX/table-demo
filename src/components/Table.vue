@@ -120,21 +120,31 @@ export default {
     },
     data() {
         return {
+            //Shallow cloned Array of value (changing objects properties within array will modify value)
             data: [],
+            //Data Displayed in table after filter/sort
             dataDisplay: [],
+            //Key value pair of selected id and boolean
             selected: {},
-            isAscending: false,
+            //Name of current field sort is determined by
             sortField: "",
+            //Current search term
             term: "",
+            //Current sort order
+            isAscending: false,
+            //All selected checkbox state
             allSelected: false,
+            //Edit button toggle state
             isEditing: false
         };
     },
     watch: {
+        //When value is changed via parent data is updated and component is rerendered
         value() {
             this.data = this.value.slice(0);
             this.filterData(this.data);
         },
+        //When all selected checkbox is changed check all checkboxes
         allSelected() {
             var $this = this;
             this.dataDisplay.forEach(item => {
@@ -143,8 +153,8 @@ export default {
         }
     },
     computed: {
+        //Modifies total selected counter when an item is checked
         totalSelected() {
-            console.log("test");
             var total = 0;
             var pairs = Object.entries(this.selected);
             pairs.forEach(pair => {
@@ -156,6 +166,7 @@ export default {
         }
     },
     methods: {
+        //Sorts data based off a passed in field name and sort order
         sortData(field, order, sortable) {
             if (!sortable) {
                 return;
@@ -182,6 +193,7 @@ export default {
                 }
             });
         },
+        //Filters data based on search term
         filterData(data) {
             const term = this.term;
             const columns = this.columns;
@@ -198,12 +210,14 @@ export default {
             });
             this.sortData(this.sortField, this.isAscending, true);
         },
+        //Toggles edit buttons and checkboxes
         toggleEdit() {
             this.isEditing = !this.isEditing;
             if (this.isEditing) {
                 this.selected = {};
             }
         },
+        //Removes each item that is selected based on key value pairs
         deleteSelected() {
             var selected = Object.entries(this.selected);
             selected.forEach(pair => {
@@ -216,16 +230,14 @@ export default {
             this.selected = {};
             this.saveItems();
         },
+        //Emits input event with the entire modified dataset back to its parent
         saveItems() {
             this.$emit("input", this.data);
-        },
-        onTableScroll() {
-            var scrollTop = this.$refs.table.scrollTop;
-            this.$refs.head.style.transform = "translateY(" + scrollTop + "px)";
         }
     },
     mounted() {
-        this.filterData(this.value.slice(0));
+        this.data = this.value.slice(0);
+        this.filterData(this.data);
     }
 };
 </script>
