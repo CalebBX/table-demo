@@ -227,7 +227,7 @@ export default {
             selected.forEach(pair => {
                 if (pair[1]) {
                     this.data = this.data.filter(item => {
-                        return item[this.id_field] !== pair[0];
+                        return item[this.id_field] != pair[0];
                     });
                 }
             });
