@@ -30,15 +30,32 @@ export default {
     data() {
         return {
             columns: [
-                { field: "Name", label: "Name", sortable: true },
+                {
+                    field: "Name",
+                    label: "Name",
+                    sortable: true,
+                    width: "20%"
+                },
                 {
                     field: "Description",
                     label: "Description",
                     type: "text",
-                    editable: true
+                    editable: true,
+                    width: "50%"
                 },
-                { field: "Date", label: "Date", type: "date", sortable: true },
-                { field: "Amount", label: "Amount", sortable: true }
+                {
+                    field: "Date",
+                    label: "Date",
+                    type: "date",
+                    sortable: true,
+                    width: "15%"
+                },
+                {
+                    field: "Amount",
+                    label: "Amount",
+                    sortable: true,
+                    width: "15%"
+                }
             ]
         };
     },
@@ -58,5 +75,11 @@ export default {
 }
 .reset:hover {
     text-decoration: underline;
+}
+.root {
+    margin: auto;
+    width: 75%;
+    max-width: 1000px;
+    height: 60vh;
 }
 </style>

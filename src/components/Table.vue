@@ -25,83 +25,83 @@
                 />
             </div>
         </div>
-        <div class="table-wrapper">
-            <table class="table row-hover">
-                <thead ref="head">
-                    <tr>
-                        <th v-if="isEditing" class="checkbox-column">
-                            <div class="pretty p-default">
-                                <input type="checkbox" v-model="allSelected" />
-                                <div class="state">
-                                    <label></label>
-                                </div>
+        <table>
+            <thead ref="head">
+                <tr>
+                    <th v-if="isEditing" class="checkbox-column">
+                        <div class="pretty p-default">
+                            <input type="checkbox" v-model="allSelected" />
+                            <div class="state">
+                                <label></label>
                             </div>
-                        </th>
-                        <th
-                            v-for="column in columns"
-                            :key="column.field"
-                            @click="
-                                sortData(
-                                    column.field,
-                                    !isAscending,
-                                    column.sortable
-                                )
-                            "
-                        >
-                            {{ column.label }}
-                            <i
-                                v-if="sortField === column.field"
-                                class="fas fa-fw fa-arrow-up arrow-rotate"
-                                :class="{ down: !isAscending }"
-                            ></i>
-                        </th>
-                    </tr>
-                </thead>
+                        </div>
+                    </th>
+                    <th
+                        v-for="column in columns"
+                        :style="getColumnWidth(column.width)"
+                        :key="column.field"
+                        @click="
+                            sortData(
+                                column.field,
+                                !isAscending,
+                                column.sortable
+                            )
+                        "
+                    >
+                        {{ column.label }}
+                        <i
+                            v-if="sortField === column.field"
+                            class="fas fa-fw fa-arrow-up arrow-rotate"
+                            :class="{ down: !isAscending }"
+                        ></i>
+                    </th>
+                </tr>
+            </thead>
 
-                <tbody>
-                    <VuePerfectScrollbar class="scroll-area">
-                        <tr v-for="item in dataDisplay" :key="item[id_field]">
-                            <td v-if="isEditing" class="checkbox-column">
-                                <div class="checkbox-container">
-                                    <div class="pretty p-default">
-                                        <input
-                                            type="checkbox"
-                                            v-model="selected[item[id_field]]"
-                                        />
-                                        <div class="state">
-                                            <label></label>
-                                        </div>
+            <tbody>
+                <VuePerfectScrollbar class="scroll-area">
+                    <tr v-for="item in dataDisplay" :key="item[id_field]">
+                        <td v-if="isEditing" class="checkbox-column">
+                            <div class="checkbox-container">
+                                <div class="pretty p-default">
+                                    <input
+                                        type="checkbox"
+                                        v-model="selected[item[id_field]]"
+                                    />
+                                    <div class="state">
+                                        <label></label>
                                     </div>
                                 </div>
-                            </td>
-                            <td v-for="column in columns" :key="column.field">
-                                <div
-                                    v-if="
-                                        column.editable &&
-                                            column.type === 'text'
-                                    "
-                                >
-                                    <input
-                                        type="text"
-                                        v-model="item[column.field]"
-                                        @blur="saveItems()"
-                                        @keyup.enter="$event.target.blur"
-                                    />
-                                </div>
-                                <div v-else-if="column.type === 'date'">
-                                    {{
-                                        new Date(
-                                            item[column.field]
-                                        ).toLocaleDateString()
-                                    }}
-                                </div>
-                                <div v-else>{{ item[column.field] }}</div>
-                            </td>
-                        </tr>
-                    </VuePerfectScrollbar>
-                </tbody>
-            </table>
-        </div>
+                            </div>
+                        </td>
+                        <td
+                            :style="getColumnWidth(column.width)"
+                            v-for="column in columns"
+                            :key="column.field"
+                        >
+                            <div
+                                v-if="column.editable && column.type === 'text'"
+                            >
+                                <input
+                                    type="text"
+                                    v-model="item[column.field]"
+                                    @blur="saveItems()"
+                                    @keyup.enter="$event.target.blur"
+                                />
+                            </div>
+                            <div v-else-if="column.type === 'date'">
+                                {{
+                                    new Date(
+                                        item[column.field]
+                                    ).toLocaleDateString()
+                                }}
+                            </div>
+                            <div v-else>{{ item[column.field] }}</div>
+                        </td>
+                    </tr>
+                </VuePerfectScrollbar>
+            </tbody>
+        </table>
         <div v-if="isEditing" class="total-selected">
             Total Selected:
             <b>{{ totalSelected }}</b>
@@ -170,6 +170,12 @@ export default {
         }
     },
     methods: {
+        getColumnWidth(width) {
+            if (width) {
+                return `width: ${width}`;
+            }
+            return "";
+        },
         //Sorts data based off a passed in field name and sort order
         sortData(field, order, sortable) {
             if (!sortable) {
@@ -263,17 +269,59 @@ $hover-color: rgb(0, 0, 0);
     border: none;
 }
 .table-container {
-    width: 75%;
-    margin: auto;
+    width: 100%;
+    height: inherit;
 }
-.table-wrapper {
-    float: left;
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+table {
+    width: 100%;
+    height: inherit;
+    margin-bottom: 2rem;
+    border-collapse: collapse;
+}
+tbody {
+    height: inherit;
+}
+thead,
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    // background-color: $body-color;
+}
+th {
+    // background-color: $body-color;
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 3px solid $border-color;
+    transition: border 0.5s ease;
+}
+th:hover {
+    border-bottom: 3px solid $hover-color;
+}
+td {
+    border-bottom: 1px solid $border-color;
+    text-align: left;
+    padding: 1rem;
+    input[type="text"] {
+        width: 100%;
+        padding: 1rem;
+        margin: -1rem;
+        border: 0;
+    }
+    input:focus {
+        outline: none;
+    }
 }
 .scroll-area {
-    position: relative;
-    margin: auto;
+    // position: relative;
+    // margin: auto;
     width: 100%;
-    height: 600px;
+    height: inherit;
 }
 .arrow-rotate {
     transition: background-color 0.5s ease;
@@ -286,16 +334,7 @@ $hover-color: rgb(0, 0, 0);
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
 }
-table {
-    width: 100%;
-    margin-bottom: 2rem;
-    border-collapse: collapse;
-}
-.toolbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem;
-}
+
 input {
     font-family: inherit;
     font-size: inherit;
@@ -337,42 +376,6 @@ input {
     }
     i {
         color: $hover-color;
-    }
-}
-
-thead {
-    color: $text-color;
-    width: calc(100% - 1em);
-}
-thead,
-tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-    background-color: $body-color;
-}
-th {
-    background-color: $body-color;
-    text-align: left;
-    padding: 1rem;
-    border-bottom: 3px solid $border-color;
-    transition: border 0.5s ease;
-}
-th:hover {
-    border-bottom: 3px solid $hover-color;
-}
-td {
-    border-bottom: 1px solid $border-color;
-    text-align: left;
-    padding: 1rem;
-    input[type="text"] {
-        width: 100%;
-        padding: 1rem;
-        margin: -1rem;
-        border: 0;
-    }
-    input:focus {
-        outline: none;
     }
 }
 </style>
