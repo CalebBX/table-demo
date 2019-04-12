@@ -291,10 +291,8 @@ tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
-    // background-color: $body-color;
 }
 th {
-    // background-color: $body-color;
     text-align: left;
     padding: 1rem;
     border-bottom: 3px solid $border-color;
@@ -318,8 +316,6 @@ td {
     }
 }
 .scroll-area {
-    // position: relative;
-    // margin: auto;
     width: 100%;
     height: inherit;
 }
