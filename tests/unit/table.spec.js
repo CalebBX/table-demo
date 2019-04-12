@@ -2,20 +2,31 @@ import { expect } from 'chai'
 import { shallowMount } from '@vue/test-utils'
 import Table from '@/components/Table.vue'
 
-var data = [
-    { a: 'dog', b: '456', c: 'red' },
-    { a: 'zebra', b: '789', c: 'red' },
-    { a: 'cat', b: '123', c: 'blue' }
+const data = [
+    { id: 1, a: 'dog', b: 'train', c: 'red' },
+    { id: 2, a: 'zebra', b: 'car', c: 'red' },
+    { id: 3, a: 'cat', b: 'bus', c: 'blue' }
 ]
-var columns = [
-    { field: 'a', label: 'A', sortable: true },
-    { field: 'b', label: 'B', sortable: true },
+const columns = [
+    {
+        field: 'a',
+        label: 'A',
+        sortable: true
+    },
+    {
+        field: 'b',
+        label: 'B',
+        sortable: true,
+        type: 'text',
+        editable: true
+    },
     { field: 'c', label: 'C' }
 ]
+const id_field = 'id'
 describe('Table.vue', () => {
     describe('Initial render', () => {
         var wrapper = shallowMount(Table, {
-            propsData: { value: data, columns }
+            propsData: { value: data, columns, id_field }
         })
 
         it('renders column labels', () => {
@@ -28,7 +39,7 @@ describe('Table.vue', () => {
 
     describe('User clicks sortable column header', () => {
         var wrapper = shallowMount(Table, {
-            propsData: { value: data, columns }
+            propsData: { value: data, columns, id_field }
         })
         it('Sorts field ascending', () => {
             wrapper.find('th').trigger('click')
@@ -41,7 +52,7 @@ describe('Table.vue', () => {
     })
     describe('User types in searchbar', () => {
         var wrapper = shallowMount(Table, {
-            propsData: { value: data, columns }
+            propsData: { value: data, columns, id_field }
         })
         var tbody = wrapper.find('tbody')
         it('Search bar filters items', () => {
@@ -59,6 +70,43 @@ describe('Table.vue', () => {
             expect(tbody.text()).to.include('zebra')
             expect(tbody.text()).to.include('dog')
             expect(tbody.text()).to.include('cat')
+        })
+    })
+    describe('User modifies an editable field', () => {
+        var wrapper = shallowMount(Table, {
+            propsData: { value: data, columns, id_field }
+        })
+        var tbody = wrapper.find('tbody')
+
+        it('Inputs exist in table', () => {
+            expect(tbody.contains('input')).to.equal(true)
+        })
+        it('Input updates state', () => {
+            expect(wrapper.vm.value[0].b).to.equal('train')
+            wrapper.find('td input').setValue('airplane')
+            expect(wrapper.vm.value[0].b).to.equal('airplane')
+        })
+    })
+    describe('User deletes item from table', () => {
+        var wrapper = shallowMount(Table, {
+            propsData: { value: data, columns, id_field }
+        })
+        var tbody = wrapper.find('tbody')
+        it('Edit button shows checkboxes', () => {
+            expect(tbody.contains('input[type="checkbox"]')).to.equal(false)
+            wrapper.find('#editButton').trigger('click')
+            expect(tbody.contains('input[type="checkbox"]')).to.equal(true)
+        })
+        it('Checkbox adds item to selected list', () => {
+            expect(wrapper.vm.selected).to.be.empty
+            wrapper.find('td input[type="checkbox"').trigger('click')
+            expect(JSON.stringify(wrapper.vm.selected)).to.equal('{"1":true}')
+        })
+        it('Delete button removes selected items', () => {
+            expect(wrapper.vm.data.length).to.equal(3)
+            wrapper.find('#deleteButton').trigger('click')
+            expect(wrapper.vm.data.length).to.equal(2)
+            expect(wrapper.vm.selected).to.be.empty
         })
     })
 })
