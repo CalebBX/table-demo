@@ -10,64 +10,64 @@
 
 <script>
 // @ is an alias to /src
-import Table from "@/components/Table.vue";
+import Table from '@/components/Table.vue'
 
 export default {
-    name: "TableDemo",
+    name: 'TableDemo',
     components: {
         Table
     },
     computed: {
         payments: {
-            get() {
-                return this.$store.state.payments;
+            get () {
+                return this.$store.state.payments
             },
-            set(payments) {
-                this.$store.dispatch("savePayments", payments);
+            set (payments) {
+                this.$store.dispatch('savePayments', payments)
             }
         }
     },
-    data() {
+    data () {
         return {
             columns: [
                 {
-                    field: "Name",
-                    label: "Name",
+                    field: 'Name',
+                    label: 'Name',
                     sortable: true,
-                    width: "20%"
+                    width: '20%'
                 },
                 {
-                    field: "Description",
-                    label: "Description",
-                    type: "text",
+                    field: 'Description',
+                    label: 'Description',
+                    type: 'text',
                     editable: true,
-                    width: "50%"
+                    width: '50%'
                 },
                 {
-                    field: "Date",
-                    label: "Date",
-                    type: "date",
+                    field: 'Date',
+                    label: 'Date',
+                    type: 'date',
                     sortable: true,
-                    width: "15%"
+                    width: '15%'
                 },
                 {
-                    field: "Amount",
-                    label: "Amount",
+                    field: 'Amount',
+                    label: 'Amount',
                     sortable: true,
-                    width: "15%"
+                    width: '15%'
                 }
             ]
-        };
-    },
-    methods: {
-        resetDB() {
-            this.$store.dispatch("resetPaymentsDB");
         }
     },
-    mounted() {
-        this.$store.dispatch("getPaymentsFromDB");
+    methods: {
+        resetDB () {
+            this.$store.dispatch('resetPaymentsDB')
+        }
+    },
+    mounted () {
+        this.$store.dispatch('getPaymentsFromDB')
     }
-};
+}
 </script>
 <style>
 .reset {

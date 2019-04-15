@@ -109,147 +109,147 @@
     </div>
 </template>
 <script>
-import VuePerfectScrollbar from "vue-perfect-scrollbar";
+import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 export default {
     props: {
         columns: Array,
         value: Array,
         id_field: {
             type: String,
-            default: "id"
+            default: 'id'
         }
     },
     components: {
         VuePerfectScrollbar
     },
-    data() {
+    data () {
         return {
-            //Shallow cloned Array of value (changing objects properties within array will modify value)
+            // Shallow cloned Array of value (changing objects properties within array will modify value)
             data: [],
-            //Data Displayed in table after filter/sort
+            // Data Displayed in table after filter/sort
             dataDisplay: [],
-            //Key value pair of selected id and boolean
+            // Key value pair of selected id and boolean
             selected: {},
-            //Name of current field sort is determined by
-            sortField: "",
-            //Current search term
-            term: "",
-            //Current sort order
+            // Name of current field sort is determined by
+            sortField: '',
+            // Current search term
+            term: '',
+            // Current sort order
             isAscending: false,
-            //All selected checkbox state
+            // All selected checkbox state
             allSelected: false,
-            //Edit button toggle state
+            // Edit button toggle state
             isEditing: false
-        };
+        }
     },
     watch: {
-        //When value is changed via parent data is updated and component is rerendered
-        value() {
-            this.data = this.value.slice(0);
-            this.filterData(this.data);
+        // When value is changed via parent data is updated and component is rerendered
+        value () {
+            this.data = this.value.slice(0)
+            this.filterData(this.data)
         },
-        //When all selected checkbox is changed check all checkboxes
-        allSelected() {
-            var $this = this;
+        // When all selected checkbox is changed check all checkboxes
+        allSelected () {
+            var $this = this
             this.dataDisplay.forEach(item => {
-                $this.selected[item[id_field]] = $this.allSelected;
-            });
+                $this.selected[item[id_field]] = $this.allSelected
+            })
         }
     },
     computed: {
-        //Modifies total selected counter when an item is checked
-        totalSelected() {
-            var total = 0;
-            var pairs = Object.entries(this.selected);
+        // Modifies total selected counter when an item is checked
+        totalSelected () {
+            var total = 0
+            var pairs = Object.entries(this.selected)
             pairs.forEach(pair => {
                 if (pair[1]) {
-                    total += 1;
+                    total += 1
                 }
-            });
-            return total;
+            })
+            return total
         }
     },
     methods: {
-        getColumnWidth(width) {
+        getColumnWidth (width) {
             if (width) {
-                return `width: ${width}`;
+                return `width: ${width}`
             }
-            return "";
+            return ''
         },
-        //Sorts data based off a passed in field name and sort order
-        sortData(field, order, sortable) {
+        // Sorts data based off a passed in field name and sort order
+        sortData (field, order, sortable) {
             if (!sortable) {
-                return;
+                return
             }
-            this.sortField = field;
-            this.isAscending = order;
-            var asc = this.isAscending;
-            this.dataDisplay.sort(function(a, b) {
+            this.sortField = field
+            this.isAscending = order
+            var asc = this.isAscending
+            this.dataDisplay.sort(function (a, b) {
                 if (asc) {
                     if (a[field] < b[field]) {
-                        return -1;
+                        return -1
                     }
                     if (a[field] > b[field]) {
-                        return 1;
+                        return 1
                     }
-                    return 0;
+                    return 0
                 } else {
                     if (a[field] < b[field]) {
-                        return 1;
+                        return 1
                     }
                     if (a[field] > b[field]) {
-                        return -1;
+                        return -1
                     }
                 }
-            });
+            })
         },
-        //Filters data based on search term
-        filterData(data) {
-            const term = this.term;
-            const columns = this.columns;
+        // Filters data based on search term
+        filterData (data) {
+            const term = this.term
+            const columns = this.columns
             this.dataDisplay = data.filter(item => {
                 return columns.some(column => {
                     return item[column.field]
                         .toString()
                         .toLowerCase()
-                        .includes(term.toLowerCase());
+                        .includes(term.toLowerCase())
 
                     {
                     }
-                });
-            });
-            this.sortData(this.sortField, this.isAscending, true);
+                })
+            })
+            this.sortData(this.sortField, this.isAscending, true)
         },
-        //Toggles edit buttons and checkboxes
-        toggleEdit() {
-            this.isEditing = !this.isEditing;
+        // Toggles edit buttons and checkboxes
+        toggleEdit () {
+            this.isEditing = !this.isEditing
             if (this.isEditing) {
-                this.selected = {};
+                this.selected = {}
             }
         },
-        //Removes each item that is selected based on key value pairs
-        deleteSelected() {
-            var selected = Object.entries(this.selected);
+        // Removes each item that is selected based on key value pairs
+        deleteSelected () {
+            var selected = Object.entries(this.selected)
             selected.forEach(pair => {
                 if (pair[1]) {
                     this.data = this.data.filter(item => {
-                        return item[this.id_field] != pair[0];
-                    });
+                        return item[this.id_field] != pair[0]
+                    })
                 }
-            });
-            this.selected = {};
-            this.saveItems();
+            })
+            this.selected = {}
+            this.saveItems()
         },
-        //Emits input event with the entire modified dataset back to its parent
-        saveItems() {
-            this.$emit("input", this.data);
+        // Emits input event with the entire modified dataset back to its parent
+        saveItems () {
+            this.$emit('input', this.data)
         }
     },
-    mounted() {
-        this.data = this.value.slice(0);
-        this.filterData(this.data);
+    mounted () {
+        this.data = this.value.slice(0)
+        this.filterData(this.data)
     }
-};
+}
 </script>
 <style lang="scss">
 @import "./../../node_modules/pretty-checkbox/src/pretty-checkbox.scss";
