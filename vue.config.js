@@ -1,6 +1,3 @@
-
 module.exports = {
-    publicPath: process.env.NODE_ENV === 'production'
-        ? '/britecore-coding-test/'
-        : '/'
+    publicPath: process.env.NODE_ENV === 'production' ? '/table-demo/' : '/'
 }
