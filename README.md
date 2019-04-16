@@ -1,15 +1,23 @@
 # table-demo
 
 ## BriteCore questions
+* _Deployment method_
+   * The project uses the vue_cli settings with webpack to build for production. The project is deployed on Github Pages.
 * _How long did you spend on the test? Would you do anything differently if you had more time?_
     * I spent about 16 hours completing the project. It took a little longer than expected because I was chipping away at it a few hours at a time. 
     * If I had more time I probably would have added a few extra editing features such as the abilty to add items, modifiable date fields, table, and made some stylistic changes. There are serveral improvments I could have made to increase resusablity as well.
 
 * _In what ways would you adapt your component so that it could be used in many different scenarios where a data table is
 required?_
-    * Stylistically the table fills its parent container so its easy to change the size and proportions of the table without having to modify the component's css.
-    * Several properties of each column can be adjusted to fit the individual needs of each set of data. (width, sortablility, editability, label display, data type)
-    * The table accepts a value prop and emits an input event when data is changed. So it can be used with v-model just like a regular input.
+    * __Already implemented__
+        * Stylistically the table fills its parent container so its easy to change the size and proportions of the table without having to modify the component's css.
+        * Several properties of each column can be adjusted to fit the individual needs of each set of data. (width, sortablility, editability, label display, data type)
+        * The table accepts a value prop and emits an input event when data is changed. So it can be used with v-model just like a regular input.
+    * __Future__
+        * Emit events to parent when certain actions are taken. Ex: onRowClick, onSort, onSave, onDelete
+        * Ability to edit scss properties to style table from parent without modifying resuable component's css.
+        * Add more modifiable fields such as date, bool, currency
+        * Add user conformation modal before major changes. Ex: Are you sure you want to delete?
 * What CSS property did you recently learn about that helped you on a project?
     * Until this project I had not used the `display: table` property. I used it in addition to a few other properties and third party pretty scroll bar js plugin to allow the header of the html table to stay fixed while the body scrolled.
 * What is your favorite modern Javascript feature? Why?
@@ -44,4 +52,73 @@ npm run lint
 ```
 npm run test:unit
 ```
+
+## Usage
+```
+<template>
+    <div>
+        <Table v-model="data" :columns="columns" id_field="id"></Table>
+    </div>
+</template>
+
+<script>
+// @ is an alias to /src
+import Table from '@/components/Table.vue'
+
+export default {
+    components: {
+        Table
+    },
+    data () {
+        return {
+            data: [
+                {
+                    id: 1,
+                    name: "Alex",
+                    desc: "Natoque penatibus et magnis dis parturient montes.",
+                    date: "2017-07-23T04:24:49-07:00"
+                },
+                {
+                    id: 2,
+                    name: "Carl",
+                    desc: "Elit eget gravida cum sociis.",
+                    date: "2019-10-28T04:57:29-07:00"
+                },
+                {
+                    id: 3,
+                    name: "Sara",
+                    desc: "Nam aliquam sem et tortor.",
+                    date: "2019-03-13T09:43:05-07:00"
+                }
+            ],
+            columns: [
+                {
+                    field: 'name',
+                    label: 'Name',
+                    sortable: true,
+                    width: '30%'
+                },
+                {
+                    field: 'desc',
+                    label: 'Description',
+                    type: 'text',
+                    editable: true,
+                    width: '50%'
+                },
+                {
+                    field: 'date',
+                    label: 'Date',
+                    type: 'date',
+                    sortable: true,
+                    width: '20%'
+                }
+            ]
+        }
+    },
+}
+</script>
+
+
+```
+
 
