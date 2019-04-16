@@ -29,6 +29,13 @@ export default {
     },
     data () {
         return {
+            //field: property name of data that will populate this column
+            //label: column header text
+            //sortable: whether or not column can be sorted by clicking column header
+            //type: field type (needed for text input or date display)
+            //editable: whether or not column can be edited (currently only works with type: text)
+            //width: width of column. (sets width css property)
+            
             columns: [
                 {
                     field: 'Name',
