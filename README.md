@@ -57,7 +57,7 @@ npm run test:unit
 
 ### Props
 ---
-##### Value: Array<Object>
+#### Value: Array<Object>
 Sets data available to table.
 _Note: data will only be displayed if field is set in columns prop_
 
@@ -72,10 +72,10 @@ This is the same as
    v-on:input="data = $event"
 ></Table
 ```
-##### id_field: String
+#### id_field: String
 Required for any modification or Deletion. Sets the field name used for each object id
 
-##### columns: Array<Object>
+#### columns: Array<Object>
 Sets additional properties for each column
 * __field: *String*__ (Required) property name of data that will populate this column
 * __label: *String*__ column header text
