@@ -33,7 +33,7 @@ required?_
 npm install
 ```
 
-### Compiles and hot-reloads for development
+#### Compiles and hot-reloads for development
 ```
 npm run serve
 ```
@@ -43,17 +43,49 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
+#### Lints and fixes files
 ```
 npm run lint
 ```
 
-### Run your unit tests
+#### Run your unit tests
 ```
 npm run test:unit
 ```
 
 ## Usage
+
+### Props
+---
+##### Value: Array<Object>
+Sets data available to table.
+_Note: data will only be displayed if field is set in columns prop_
+
+`v-model` can be used unless otherwise needed
+```
+<Table v-model="data"></Table>
+```
+This is the same as
+```
+<Table
+   v-bind:value="data"
+   v-on:input="data = $event"
+></Table
+```
+##### id_field: String
+Required for any modification or Deletion. Sets the field name used for each object id
+
+##### columns: Array<Object>
+Sets additional properties for each column
+* __field: *String*__ (Required) property name of data that will populate this column
+* __label: *String*__ column header text
+* __sortable: *Boolean*__ whether or not column can be sorted by clicking column header
+* __type: *String ('text', 'date')*__ field type (needed for text input or date display)
+* __editable: *Boolean*__ whether or not column can be edited (currently only works with type: text)
+* __width: *String*__ width of column. (sets width css property) If none set all columns will be spaced equally.
+
+### Example
+---
 ```
 <template>
     <div>
@@ -75,22 +107,22 @@ export default {
                 {
                     id: 1,
                     name: "Alex",
-                    desc: "Natoque penatibus et magnis dis parturient montes.",
-                    date: "2017-07-23T04:24:49-07:00"
+                    description: "Natoque penatibus et magnis dis parturient montes.",
+                    date: "2017-07-23T04:24:49-07:00,345.54"
                 },
                 {
                     id: 2,
                     name: "Carl",
-                    desc: "Elit eget gravida cum sociis.",
-                    date: "2019-10-28T04:57:29-07:00"
+                    description: "Elit eget gravida cum sociis.",
+                    date: "2018-11-08T05:44:15-08:00,677.08"
                 },
                 {
                     id: 3,
                     name: "Sara",
-                    desc: "Nam aliquam sem et tortor.",
-                    date: "2019-03-13T09:43:05-07:00"
+                    description: "Nam aliquam sem et tortor.",
+                    date: "2018-12-26T09:43:45-08:00,-792.3"
                 }
-            ],
+            ]
             columns: [
                 {
                     field: 'name',
@@ -118,7 +150,4 @@ export default {
 }
 </script>
 
-
 ```
-
-
