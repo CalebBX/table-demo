@@ -18,11 +18,11 @@ required?_
         * Ability to edit scss properties to style table from parent without modifying resuable component's css.
         * Add more modifiable fields such as date, bool, currency
         * Add user conformation modal before major changes. Ex: Are you sure you want to delete?
-* What CSS property did you recently learn about that helped you on a project?
+* _What CSS property did you recently learn about that helped you on a project?_
     * Until this project I had not used the `display: table` property. I used it in addition to a few other properties and third party pretty scroll bar js plugin to allow the header of the html table to stay fixed while the body scrolled.
-* What is your favorite modern Javascript feature? Why?
+* _What is your favorite modern Javascript feature? Why?_
     * Personally I really like how easy it is to work with arrays in JS. Weather its functions like map or filter for looping over arrays or being able to push and split items in an array.
-* What is your favorite third-party Vue.js library? Why?
+* _What is your favorite third-party Vue.js library? Why?_
     * One of my faviorite third-party libraries specifically designed to work with Vue.js is Buefy, which is a css library based on bulma that integrates very nicely with vue and makes it so I don't have to write so much css.
 
 
