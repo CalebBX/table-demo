@@ -75,22 +75,22 @@ export default {
                 {
                     id: 1,
                     name: "Alex",
-                    description: "Natoque penatibus et magnis dis parturient montes.",
-                    date: "2017-07-23T04:24:49-07:00,345.54"
+                    desc: "Natoque penatibus et magnis dis parturient montes.",
+                    date: "2017-07-23T04:24:49-07:00"
                 },
                 {
                     id: 2,
                     name: "Carl",
-                    description: "Elit eget gravida cum sociis.",
-                    date: "2018-11-08T05:44:15-08:00,677.08"
+                    desc: "Elit eget gravida cum sociis.",
+                    date: "2019-10-28T04:57:29-07:00"
                 },
                 {
                     id: 3,
                     name: "Sara",
-                    description: "Nam aliquam sem et tortor.",
-                    date: "2018-12-26T09:43:45-08:00,-792.3"
+                    desc: "Nam aliquam sem et tortor.",
+                    date: "2019-03-13T09:43:05-07:00"
                 }
-            ]
+            ],
             columns: [
                 {
                     field: 'name',
@@ -117,6 +117,7 @@ export default {
     },
 }
 </script>
+
 
 ```
 
