@@ -1,0 +1,43 @@
+{
+    "name": "Caleb Breaux",
+    "dob": "1999-05-14T07:00:00.000Z",
+    "location": "Kennewick, WA USA",
+    "hobbies": [
+        "coding",
+        "gaming",
+        "skiing",
+        "dirtbikes",
+        "football",
+        "volleyball"
+    ],
+    "status": {
+        "injured": true,
+        "cause": "hobbies[2]",
+        "otherwise": "killin it"
+    },
+    "favorite_food": "burgers",
+    "pets": [
+        { 
+            "type": "dog", 
+            "breed": "Vizsla",
+            "name": "Rusty" 
+        },
+        {
+            "type": "dog",
+            "breed": "Vizsla",
+            "name": "Bosen"
+        }
+    ],
+    "traits": {
+        "desireable": [
+            {"is_quick_learner": true},
+            {"is_easy_to_get_along_with": true},
+            {"is_collaborative": true},
+            {"is_good_coder": true},
+            {"is_hard_worker": true},
+            {"is_fun": true}
+        ],
+        "undesirable": null
+    }
+
+}
