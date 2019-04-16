@@ -1,6 +1,8 @@
 # table-demo
 
 ## BriteCore questions
+* _Deployment method_
+   * The project uses the vue_cli settings with webpack to build for production. The project is deployed on Github Pages.
 * _How long did you spend on the test? Would you do anything differently if you had more time?_
     * I spent about 16 hours completing the project. It took a little longer than expected because I was chipping away at it a few hours at a time. 
     * If I had more time I probably would have added a few extra editing features such as the abilty to add items, modifiable date fields, table, and made some stylistic changes. There are serveral improvments I could have made to increase resusablity as well.
